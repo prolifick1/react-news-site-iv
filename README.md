@@ -81,10 +81,8 @@ As mentioned above, you will want to add a text input to the `HomePage`.  Why no
 
 ```javascript
 <InputGroup>
-  <InputGroup.Text>
-    Search
-  </InputGroup.Text>
-  <FormControl placeholder="By Title" onChange={handleSearch} />
+  <InputGroup.Text>Search</InputGroup.Text>
+  <FormControl placeholder="by Title" onChange={handleSearch} />
 </InputGroup>
 ```
 

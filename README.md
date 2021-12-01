@@ -81,7 +81,7 @@ As mentioned above, you will want to add a text input to the `HomePage`.  Why no
 
 ```javascript
 <InputGroup>
-  <Input onChange={(e) => this.handleSearch(e)} type="text" placeholder="Search" />
+  <Input onChange={(e) => handleSearch(e)} type="text" placeholder="Search" />
 </InputGroup>
 ```
 

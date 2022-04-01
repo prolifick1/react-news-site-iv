@@ -1,40 +1,14 @@
-import { useState, useEffect } from "react"
 import ArticleList from '../components/ArticleList/ArticleList.js'
-import articlesAPI from '../api/ArticlesAPI';
+import News from '../data/news.json';
 
 
 function HomePage() {
-  // states
-  const [articles, setArticles] = useState([])
-  
-  // effects
-  useEffect(() => {
-    const getArticles = async () => {
-      let data = await articlesAPI.fetchArticles()
-      if (data) {
-        setArticles(data)
-      }
-    }
-
-    getArticles()
-  }, [])
-
-  // render
   return (
     <div>
-      { 
-        articles 
-          ? <ArticleList articles={articles} />
-          : <span>404: Error retrieving articles.</span>
-      }
+      <ArticleList articles={News} />
     </div>
   )
 }
 
 export default HomePage;
-
-
-
-
-
 

@@ -1,33 +1,19 @@
-import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom"
+import { useState } from "react"
+import { useParams } from "react-router-dom";
 import Article from '../components/Article/Article.js'
-import articlesAPI from '../api/ArticlesAPI';
+import News from '../data/news.json';
 
-function ArticlePage(props) {
-  // states
-  const [article, setArticle] = useState(null)
-
-  // router props
+function ArticlePage() {
   const params = useParams()
 
-  // effects
-  useEffect(() => {
-    const getArticle = async () => {
-      let data = await articlesAPI.fetchArticleByID(params.articleID)
-      if (data) {
-        setArticle(data)
-      }
-    }
+  const articleIndex = params.articleID - 1;
+  const [article, setArticle] = useState(News[articleIndex]);
 
-    getArticle()
-  }, [params.articleID])
-
-  // render
   return (
     <div>
       {
         article 
-          ? <Article { ...article } /> 
+          ? <Article { ...article } image={ article.multimedia.length ? article.multimedia[2].url : null } /> 
           : <span>404: Article Not Found</span>
       }
     </div>
@@ -35,4 +21,3 @@ function ArticlePage(props) {
 }
 
 export default ArticlePage;
-

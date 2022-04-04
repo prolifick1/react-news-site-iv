@@ -21,8 +21,7 @@ Again you have a choice to either use the solution code provided in this repo or
 Once you've copied over these files, run ```npm install``` (NOTE: if you run into dependency issues, try running ```npm install --legacy-peer-deps``` instead) and then ```npm run start``` - verify that no errors appear in your browser console or terminal, and that your app functions the same as it did in the last challenge.
 
 ## The News/Article API
-So far, the data that drives our News Site has been contained within a static JSON file - `./src/data/news.json`.  We will now begin connecting our front-end to an API/web service that provides news data.  
-
+So far, the data that drives our News Site has been contained within a static JSON file - `./src/data/news.json`.  We will now begin connecting our front-end to the hacker news API, that provides real news data. We should define at least 3 functions that help us fetch data from the API.
 
 The functions are:
 - `fetchArticleByID(id)` - given an article ID, returns an Article object with the given ID.

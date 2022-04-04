@@ -2,7 +2,7 @@
 
 ## High Level Objectives
 
-  1. Create a JavaScript module that handles retrieving article data from an API using [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
+  1. Create a JavaScript module that handles retrieving article data from an API using [Axios](https://axios-http.com/docs/intro).
   2. Integrate the module above into the News Site app using the `useEffect()` hook.
   3. Slightly refactor the AppNav & ArticleDetails components
 
@@ -21,91 +21,20 @@ Again you have a choice to either use the solution code provided in this repo or
 Once you've copied over these files, run ```npm install``` (NOTE: if you run into dependency issues, try running ```npm install --legacy-peer-deps``` instead) and then ```npm run start``` - verify that no errors appear in your browser console or terminal, and that your app functions the same as it did in the last challenge.
 
 ## The News/Article API
-So far, the data that drives our News Site has been contained within a static JSON file - `./src/data/news.json`.  We will now begin connecting our front-end to an API/web service that provides news data.  This API is included in this codebase.  When you run ```npm run start```, the React development environment will function as usual. But, we also get a separate web service running on port 3001. For today, there are two endpoints you will use:
+So far, the data that drives our News Site has been contained within a static JSON file - `./src/data/news.json`.  We will now begin connecting our front-end to an API/web service that provides news data.  
 
-
-1. **http://localhost:3001/api/articles**
-
-    This endpoint returns a list of articles. Articles can be filtered by any property through a request parameter called "filter". The value of the filter request parameter should be set to a JSON string that resembles the following (where `FILTEREDKEY` is the key you want to filter an article object by, and `FILTEREDVALUE` is the corresponding value:
-
-    ```javascript
-    {
-      "where": {
-        "FILTEREDKEY": "FILTEREDVALUE"
-      }
-    }
-    ```
-
-    An example of the filter object would look like this:
-
-    ```javascript
-    {
-      "where": {
-        "byline": "By DAVID ZUCCHINO"
-      }
-    }
-    ```
-
-    The URL to the API that corresponds to the example above would look like this: `http://localhost:3001/api/articles?filter={"where":{"byline":"By DAVID ZUCCHINO"}}`
-
-2. **[http://localhost:3001/api/articles/[articleID]](http://localhost:3001/api/articles/1)**
-
-    Individual Article objects can be retrieved with the URL above.  The `articleID` is a number, an corresponds to the unique index of the article as it exists in the database.
-
-## src/api/ArticlesAPI.js
-
-The `ArticlesAPI.js` JavaScript module's primary function is to handle making requests to the API described in the previous section. This module already contains a few functions that are stubbed out - your job is to complete them.
 
 The functions are:
 - `fetchArticleByID(id)` - given an article ID, returns an Article object with the given ID.
 - `fetchArticlesBySection(section)` - returns a list of articles whose `section` attribute matches the section argument.
 - `fetchArticles(filters)` - returns a list of articles. The filters argument is optional - if no filters are provided, an array of all the articles are returned. If filters are provided, an array of Articles that meet the criteria are returned.
 
-For this, we want you use the concept of [fetch and async/await](https://betterprogramming.pub/promises-with-async-await-605645a6c0e8). Here's a basic summary:
-- To make API calls to outside resources within your React app, you have to make `fetch` requests
-- `fetch` is inheritantly asynchronous (i.e., not synchronous / happening out of order)
-- `fetch` returns a Javascript `Promise` object. These `Promise` objects are basically Javascript's immediate response to you, saying "Hey I have received your request. I `Promise` to respond when I can."
+For this, we want you use async/await.
+- To make API calls to outside resources within your React app, you have to use axios to make `get` requests
+- axios is inheritantly asynchronous (i.e., not synchronous / happening out of order)
+- `axios.get` returns a Javascript `Promise` object. These `Promise` objects are basically Javascript's immediate response to you, saying "Hey I have received your request. I `Promise` to respond when I can."
 - `Promise` objects must be resolved in order to get to the data using the [.then()](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) function built into Javascript
 - Error-handling with `.catch()`: whenever calling out to an API, there is always a possibility of an error occuring. To handle this error on the client-side and give our user proper feedback, we'll tack on a [.catch()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) at the end of our promise chain.
-
-Here's an example of fetch using `.then().catch()`:
-```javascript
-function getMovies() {
-  fetch('http://example.com/movies.json') // make a request this URL. this returns a Promise object.
-    .then((response) => { // THEN once that's done, take the response, save it as "response" and turn it into JSON
-      return response.json();
-    })
-    .then((myJson) => { // THEN once that's done, take the JSON you generated, save it as "myJson" and return it
-      return myJson;
-    })
-    .catch((error) => {
-      // handle the error - log it? show the user some error message?
-    })
-}
-```
-`.then()` is a big pain because of an issue called callback hell. With the release of ES2017, Javascript maintainers introduced `async/await`, which allows developers to write asynchronous code that looks synchronous. Here's our fetch from above written using `async/await`:
-
-```javascript
-async function getMovies() {
-  try {
-    let response = await fetch('http://example.com/movies.json');
-    let data = await response.json();
-    return data;
-  } catch (error) {
-    // handle the error
-  }
-}
-```
-Here, we are declaring `getMovies` as an asynchronous function (note the `async` before the `function` keyword; the same can be done with an arrow function: `async () => {}`). When it's called, it `await`s the completion of the `fetch` request and saves the result to `response`.
-
-At that point, it moves to the next line. It again `await`s the completion of the `.json()` method and saves the result to `data`. Finally, it returns `data` to the user.
-
-With `async/await` we still need to consider error-handling, so we wrap the fetch in a [try/catch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch).
-
-A Unit Test that asserts this functionality can be found alongside `ArticleAPI.js` - it's named `ArticleAPI.test.js`.
-
-**Success Criteria:**  Run `npm run test` to see if ArticlesAPI's unit tests succeed (the tests in `ArticleAPI.test.js`). When they are all passing, you are done with this section.
-
 
 ## Integrating ArticlesAPI.js into your App
 At the moment, there are two components that use Article data:
@@ -122,7 +51,7 @@ The first thing to know is that traditional DOM manipulation is very slow. React
 Since Facebook created React, we'll use their web app as an example. Looking at a facebook user's homepage, it's reasonable to assume that there are different components for stories, newsfeed, chat, etc. If a new story is added to the page, only the stories component needs to know about the state change and update itself and/or its child components accordingly. Or if you scroll down your newsfeed and trigger a new fetch for more posts (via infinite scroll), only the newsfeed component (and/or its child components) needs to update.
 
 ### Component Lifecycle Methods
-We'll be learning about useEffect() hook later on, but we'll need to use it for our API call.
+We'll be using the useEffect() hook to fetch our data from the API.
 
 ```javascript
 import { useState, useEffect } from 'react'
@@ -162,10 +91,6 @@ We start with state containing a null value for the `someDataFromAnAPI` key. In 
 Calling `setSomeDataFromAnAPI` triggers the component update process - at this point, our component is re-rendered.  Subsequently, the ChildComponent contained within the render re-renders - it's **data** prop is set to `someDataFromAnAPI`, which now contains the data that was returned from the API/Web Service - which then is, presumably, used to render content.
 
 You will want to follow this pattern within `src/pages/HomePage.js` and `src/pages/ArticlePage.js` and remove references in these files to `src/data/news.json`.
-
-**Success Criteria:**  `HomePage.js` and `ArticlePage.js` should utilize the `ArticleAPI.js` module to fetch data from  `ArticleAPI.js`, and then display that data.
-
-** Hint: Careful with where the image lives on the `article` object **
 
 As we're accustomed to doing, we first use the `useState()` hook to create a piece of state called `someDateFromAnAPI` and instantiate it as `null`.
 

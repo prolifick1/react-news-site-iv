@@ -27,9 +27,6 @@ function App() {
     }})
     )
 
-  const getArticleById = (articleId) => {
-    return articles[articleId]
-  }
   
   return (
     <div className="App">
@@ -38,7 +35,7 @@ function App() {
       <Router> 
         <Routes>
           <Route path='/' element={<HomePage articles = {articles}/>} />
-          <Route path='/articles/:articleID' element={<ArticlePage  getArticleById={getArticleById} />} />
+          <Route path='/articles/:articleID' element={<ArticlePage  articles = {articles} />} />
           <Route path='/sections/:sectionName' element={<SectionPage articles={articles}/> } />
 
         </Routes>

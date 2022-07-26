@@ -13,7 +13,7 @@ function AppNav (props){
         <Navbar> 
             <Navbar.Brand>
                 <img src="https://www.codeplatoon.org/wp-content/uploads/2018/10/CP-logo-2018-abbrev-1.png" width="60" />
-                Code Platoon News
+                CP News
             </Navbar.Brand>
             <Nav>
                 <Nav.Link href='/'>

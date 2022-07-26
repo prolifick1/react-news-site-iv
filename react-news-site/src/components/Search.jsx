@@ -20,6 +20,9 @@ function Search ({articles}) {
             const filteredArticles = articles.filter(article => article.title.includes(searchTitle))
             setResults(filteredArticles)
         }
+        else {
+            setResults([])
+       }
 
     }, [searchTitle])
 

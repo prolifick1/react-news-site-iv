@@ -1,10 +1,11 @@
 import {useParams} from 'react-router-dom'
 import Article from '../components/Article'
 
-function ArticlePage ({getArticleById}){
+function ArticlePage ({articles}){
 
     let {articleID} = useParams()
-    const article = getArticleById(articleID-1)
+
+    const article = articles[articleID-1] // -1 because we added 1 in the url to make it restful
 
     return (
         <div>

@@ -50,11 +50,13 @@ Since Facebook created React, we'll use their web app as an example. Looking at 
 
 ## Integrating ArticlesAPI.js into your App
 At the moment, there is one component that is importing the json data and that is App.jsx
-We might want to have each page consume its own data instead of keeping it in the `App.jsx` component but we can do that later. We can start in our main app file first.
+We might want to have each page consume its own data instead of keeping it in the `App.jsx` component but we can do that later. 
 
 
 ### useEffect() -- example of api consumption
 We'll be using the useEffect() hook to fetch our data from the API.
+
+An example of making an api call and consuming the response:
 
 ```javascript
 import { useState, useEffect } from 'react'
@@ -95,15 +97,14 @@ We start with state containing a null value for the `someDataFromAnAPI` key. In 
 
 Calling `setSomeDataFromAnAPI` triggers the component update process - at this point, our component is re-rendered.  Subsequently, the ChildComponent contained within the render re-renders - it's **data** prop is set to `someDataFromAnAPI`, which now contains the data that was returned from the API/Web Service - which then is, presumably, used to render content.
 
-
-
-The final goal is to recreate the [hackernews website](https://news.ycombinator.com/)
-
+The final goal here is to recreate the [hackernews website](https://news.ycombinator.com/)
+Here's what to work on next:
 - Complete the three api functions: `fetchArticleByID`,`fetchArticles`, and `fetchArticlesBySection`
 - Update the `data/sections.json` file to have sections that match the HN site
 - Integrate the above api consumption pattern fully into your page files `src/pages/HomePage.js` , `src/pages/ArticlePage.js` and `src/pages/SectionPage.js` so that they are functional and each fetch the data related to them
    - this will probably mean refactoring the child components as well to work with our new pattern
+- And of course, most importantly, is styling :) 
 
-Last thing to do is styling :) Have fun!
+Have fun!
 
 

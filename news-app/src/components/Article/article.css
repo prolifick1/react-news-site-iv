@@ -1,7 +1,0 @@
-.article {
-  display: flex;
-}
-
-.article > * {
-  padding: 20px;
-}
